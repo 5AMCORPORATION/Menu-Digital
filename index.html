@@ -2,593 +2,810 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menú Digital Premium</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Street Food Pro</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Impact&family=SF+Pro+Display:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: #000000;
-            --surface-color: #1C1C1E;
-            --surface-secondary: #2C2C2E;
+            --surface-color: #121212;
+            --card-bg: #1C1C1E;
             --accent-color: #FF4500;
             --text-main: #FFFFFF;
             --text-muted: #8E8E93;
-            --border-color: #3A3A3C;
+            --border-color: #2C2C2E;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'SF Pro Display', -apple-system, sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
-            line-height: 1.5;
-            padding-bottom: 100px;
+            padding-bottom: 40px;
+            overflow-x: hidden;
         }
 
-        header {
-            text-align: center;
-            padding: 40px 20px 20px;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+        /* Navbar fija superior estilo Apple */
+        .navbar {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            height: 60px;
+            background-color: rgba(28, 28, 30, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 100;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
-        header h1 {
-            font-size: 2.5rem;
+        .navbar-brand {
+            font-family: 'SF Pro Display', sans-serif;
             font-weight: 700;
-            letter-spacing: -0.5px;
-            margin-bottom: 8px;
-        }
-
-        header p {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            font-weight: 300;
-        }
-
-        main {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .category-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin: 30px 0 15px;
             color: var(--accent-color);
-            letter-spacing: -0.3px;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
         }
 
-        .menu-item {
-            background-color: var(--surface-color);
-            border-radius: 18px;
-            padding: 20px;
-            margin-bottom: 20px;
+        .cart-badge {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        /* Hero Header con imagen de fondo */
+        .hero {
+            position: relative;
+            height: 340px;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.2), #000000), 
+                        url('https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=600&q=80') center center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px 30px;
+        }
+
+        .hero h1 {
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            font-size: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-main);
+            line-height: 1.1;
+        }
+
+        .hero p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-top: 8px;
+            max-width: 280px;
+        }
+
+        /* Listas de categorías y scroll horizontal */
+        .section-title {
+            font-family: 'Impact', sans-serif;
+            font-size: 1.6rem;
+            text-transform: uppercase;
+            color: var(--accent-color);
+            letter-spacing: 1px;
+            margin: 25px 20px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .horizontal-scroll {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding: 5px 20px 15px;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+        }
+
+        .horizontal-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Tarjetas de Producto */
+        .product-card {
+            background-color: var(--card-bg);
+            border-radius: 24px;
+            min-width: 200px;
+            width: 200px;
+            scroll-snap-align: start;
+            padding: 12px;
             border: 1px solid var(--border-color);
-            transition: transform 0.2s ease, border-color 0.2s ease;
+            display: flex;
+            flex-direction: column;
         }
 
-        .menu-item:hover {
+        .product-img {
+            width: 100%;
+            height: 140px;
+            border-radius: 18px;
+            object-fit: cover;
+            background-color: #2c2c2e;
+        }
+
+        .product-name {
+            font-family: 'Impact', sans-serif;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .product-price {
+            color: var(--accent-color);
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin: 6px 0 12px;
+        }
+
+        .btn-customize {
+            background-color: var(--accent-color);
+            color: var(--text-main);
+            border: none;
+            padding: 10px;
+            border-radius: 14px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(255, 69, 0, 0.2);
+        }
+
+        /* VENTANA MODAL FLOTANTE (Pop-up de Personalización) */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0, 0, 0, 0.75);
+            z-index: 200;
+            display: none;
+            justify-content: center;
+            align-items: flex-end;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            width: 100%;
+            max-height: 85vh;
+            border-top-left-radius: 30px;
+            border-top-right-radius: 30px;
+            padding: 24px;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .modal-header-title {
+            font-family: 'Impact', sans-serif;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+
+        .modal-section-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 15px 0 10px;
+        }
+
+        /* Cuadrícula de opciones tipo botones grandes táctiles */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .option-card {
+            background-color: #121212;
+            border: 2px solid transparent;
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .option-card input {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .option-card .custom-checkbox {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 2px solid var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .option-card input:checked + .custom-checkbox {
+            background-color: var(--accent-color);
             border-color: var(--accent-color);
         }
 
-        .item-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 10px;
+        .option-card input:checked + .custom-checkbox::after {
+            content: '✓';
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
         }
 
-        .item-name {
-            font-size: 1.3rem;
-            font-weight: 600;
-        }
-
-        .item-price {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--accent-color);
-        }
-
-        .item-description {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 15px;
-            font-weight: 300;
-        }
-
-        /* Opciones de Personalización */
-        .custom-section {
-            border-top: 1px solid var(--border-color);
-            padding-top: 15px;
-            margin-top: 15px;
-        }
-
-        .custom-title {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-muted);
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-
-        .options-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .option-label {
-            display: flex;
-            align-items: center;
-            background-color: var(--surface-secondary);
-            padding: 10px 12px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            user-select: none;
-            border: 1px solid transparent;
-            transition: background-color 0.2s, border-color 0.2s;
-        }
-
-        .option-label input {
-            margin-right: 8px;
-            accent-color: var(--accent-color);
-        }
-
-        .option-label:has(input:checked) {
+        .option-card.selected {
             border-color: var(--accent-color);
             background-color: rgba(255, 69, 0, 0.05);
         }
 
-        .btn-add {
-            display: block;
-            width: 100%;
-            background-color: var(--accent-color);
-            color: var(--text-main);
+        .modal-actions {
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn-cancel {
+            background: none;
             border: none;
-            padding: 12px;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: opacity 0.2s;
-        }
-
-        .btn-add:hover {
-            opacity: 0.9;
-        }
-
-        /* Secciones de Checkout y Carrito */
-        .checkout-container {
-            background-color: var(--surface-color);
-            border-radius: 24px;
-            padding: 25px;
-            margin-top: 40px;
-            border: 1px solid var(--border-color);
-        }
-
-        .checkout-title {
-            font-size: 1.6rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
-        }
-
-        .cart-empty {
             color: var(--text-muted);
-            text-align: center;
-            padding: 20px 0;
+            font-size: 0.95rem;
+            padding: 10px;
+            cursor: pointer;
         }
 
-        .cart-item {
+        /* CONTENEDOR DE LA COMANDA (Fondo Blanco Elegante Abajo) */
+        .comanda-container {
+            background-color: #FFFFFF;
+            color: #000000;
+            border-radius: 30px;
+            margin: 30px 15px;
+            padding: 24px;
+        }
+
+        .comanda-title {
+            font-family: 'Impact', sans-serif;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .cart-item-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--border-color);
+            padding: 14px 0;
+            border-bottom: 1px solid #E5E5EA;
         }
 
-        .cart-item-info h4 {
+        .cart-item-left h4 {
             font-size: 1.1rem;
-            font-weight: 600;
+            font-weight: 700;
         }
 
-        .cart-item-details {
+        .cart-item-left p {
             font-size: 0.85rem;
-            color: var(--text-muted);
+            color: #8E8E93;
         }
 
-        .cart-item-right {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .btn-remove {
+        .btn-delete-item {
             background: none;
             border: none;
             color: #FF3B30;
+            font-size: 1.3rem;
+            font-weight: bold;
             cursor: pointer;
-            font-size: 0.9rem;
+            padding-left: 10px;
         }
 
-        .cart-total {
+        .coupon-box {
             display: flex;
-            justify-content: space-between;
-            font-size: 1.3rem;
-            font-weight: 600;
+            gap: 10px;
             margin: 20px 0;
         }
 
-        /* Formulario de Datos */
-        .delivery-toggle {
-            display: flex;
-            background-color: var(--surface-secondary);
-            padding: 4px;
-            border-radius: 14px;
-            margin-bottom: 20px;
-        }
-
-        .toggle-btn {
+        .coupon-input {
             flex: 1;
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            padding: 10px;
-            font-size: 1rem;
-            font-weight: 600;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .toggle-btn.active {
-            background-color: var(--accent-color);
-            color: var(--text-main);
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .form-group input, .form-group textarea {
-            width: 100%;
-            background-color: var(--surface-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 14px;
-            color: var(--text-main);
+            border: 2px dashed var(--accent-color);
+            border-radius: 14px;
+            padding: 12px;
             font-size: 1rem;
             outline: none;
-            transition: border-color 0.2s;
+            text-align: center;
         }
 
-        .form-group input:focus, .form-group textarea:focus {
-            border-color: var(--accent-color);
+        .btn-apply {
+            background-color: #000000;
+            color: #FFFFFF;
+            border: none;
+            padding: 0 20px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
         }
 
-        .hidden {
+        .comanda-total {
+            font-family: 'Impact', sans-serif;
+            font-size: 1.6rem;
+            text-transform: uppercase;
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+
+        /* Inputs del Formulario */
+        .input-field {
+            width: 100%;
+            background-color: #F2F2F7;
+            border: 1px solid #E5E5EA;
+            border-radius: 14px;
+            padding: 14px 16px;
+            font-size: 1rem;
+            color: #000000;
+            margin-bottom: 12px;
+            outline: none;
+        }
+
+        select.input-field {
+            appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M0 0l5 5 5-5z' fill='%23000000'/></svg>");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+        }
+
+        .btn-confirm-order {
+            background-color: #FF4500;
+            color: #FFFFFF;
+            border: none;
+            width: 100%;
+            padding: 16px;
+            border-radius: 20px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(255, 69, 0, 0.3);
+            cursor: pointer;
+        }
+
+        /* Ticket de confirmación listo para enviar */
+        .ticket-box {
+            border: 2px dashed #000000;
+            border-radius: 16px;
+            padding: 16px;
+            margin-top: 20px;
+            background-color: #FAF9F6;
             display: none;
         }
 
-        .btn-submit {
-            display: block;
-            width: 100%;
-            background-color: #248A3D; /* Verde de éxito sutil */
-            color: #FFFFFF;
+        .btn-whatsapp {
+            background-color: #25D366;
+            color: white;
             border: none;
-            padding: 16px;
+            width: 100%;
+            padding: 14px;
             border-radius: 14px;
-            font-size: 1.1rem;
-            font-weight: 600;
+            font-weight: bold;
+            font-size: 1rem;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
             cursor: pointer;
-            margin-top: 25px;
-            transition: opacity 0.2s;
         }
 
-        .btn-submit:hover {
-            opacity: 0.9;
-        }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Gourmet Studio</h1>
-        <p>Alta cocina a tu alcance</p>
+    <!-- BARRA DE NAVEGACIÓN SUPERIOR -->
+    <nav class="navbar">
+        <div class="navbar-brand">STREET FOOD PRO</div>
+        <a href="#comanda-seccion" class="cart-badge">
+            🛍️ <span id="nav-cart-count">0</span>
+        </a>
+    </nav>
+
+    <!-- HEADER HERO -->
+    <header class="hero">
+        <h1>Sabor al Límite</h1>
+        <p>Personaliza tu orden al máximo y recibe el verdadero sabor de la calle.</p>
     </header>
 
-    <main>
-        <div class="category-title">Platillos Fuertes</div>
-
-        <div class="menu-item" data-id="torta_cubana" data-name="Torta Cubana Premium" data-price="120">
-            <div class="item-header">
-                <span class="item-name">Torta Cubana Premium</span>
-                <span class="item-price">$120.00</span>
-            </div>
-            <div class="item-description">Pierna horneada, jamón, milanesa, queso gouda, aguacate fresco y aderezo de la casa.</div>
-            
-            <div class="custom-section">
-                <div class="custom-title">¿Qué vegetales deseas retirar?</div>
-                <div class="options-grid">
-                    <label class="option-label"><input type="checkbox" value="Sin Cebolla"> Sin Cebolla</label>
-                    <label class="option-label"><input type="checkbox" value="Sin Cilantro"> Sin Cilantro</label>
-                    <label class="option-label"><input type="checkbox" value="Sin Jitomate"> Sin Jitomate</label>
-                </div>
-
-                <div class="custom-title">Aderezos / Condimentos adicionales</div>
-                <div class="options-grid">
-                    <label class="option-label"><input type="checkbox" value="+ Mayonesa"> Extra Mayonesa</label>
-                    <label class="option-label"><input type="checkbox" value="+ Chipotle"> Salsa Chipotle</label>
-                </div>
-            </div>
-            <button class="btn-add" onclick="addToCart('torta_cubana')">Agregar a la orden</button>
+    <!-- PRODUCTOS: HAMBURGUESAS -->
+    <div class="section-title">🍔 Hamburguesas</div>
+    <div class="horizontal-scroll">
+        <div class="product-card">
+            <img class="product-img" src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=400&q=80" alt="Doble Cheese">
+            <div class="product-name">Doble Cheese</div>
+            <div class="product-price">$12.50</div>
+            <button class="btn-customize" onclick="openCustomizer('Doble Cheese', 12.50, 'burger')">+ Personalizar</button>
         </div>
-
-        <div class="menu-item" data-id="hamburguesa_apple" data-name="Burger Signature Noir" data-price="145">
-            <div class="item-header">
-                <span class="item-name">Burger Signature Noir</span>
-                <span class="item-price">$145.00</span>
-            </div>
-            <div class="item-description">180g de carne Angus premium, tocino ahumado, queso cheddar fundido y cebolla caramelizada.</div>
-            
-            <div class="custom-section">
-                <div class="custom-title">Personalización</div>
-                <div class="options-grid">
-                    <label class="option-label"><input type="checkbox" value="Sin Pepinillos"> Sin Pepinillos</label>
-                    <label class="option-label"><input type="checkbox" value="Sin Cebolla"> Sin Cebolla</label>
-                    <label class="option-label"><input type="checkbox" value="+ Doble Queso"> Extra Queso (+$15)</label>
-                </div>
-            </div>
-            <button class="btn-add" onclick="addToCart('hamburguesa_apple')">Agregar a la orden</button>
+        <div class="product-card">
+            <img class="product-img" src="https://images.unsplash.com/photo-1553979459-d2229ba7433b?auto=format&fit=crop&w=400&q=80" alt="Bacon Monster">
+            <div class="product-name">Bacon Monster</div>
+            <div class="product-price">$14.00</div>
+            <button class="btn-customize" onclick="openCustomizer('Bacon Monster', 14.00, 'burger')">+ Personalizar</button>
         </div>
+    </div>
 
-        <div class="category-title">Bebidas y Elíxires</div>
-
-        <div class="menu-item" data-id="refresco_artesanal" data-name="Soda Orgánica de Naranja" data-price="45">
-            <div class="item-header">
-                <span class="item-name">Soda Orgánica de Naranja</span>
-                <span class="item-price">$45.00</span>
-            </div>
-            <div class="item-description">Elaborada artesanalmente con cítricos seleccionados y endulzada con miel de agave.</div>
-            <div class="custom-section">
-                <div class="custom-title">Opciones</div>
-                <div class="options-grid">
-                    <label class="option-label"><input type="checkbox" value="Con Hielo"> Con Hielo</label>
-                    <label class="option-label"><input type="checkbox" value="Con Limón"> Con Limón</label>
-                </div>
-            </div>
-            <button class="btn-add" onclick="addToCart('refresco_artesanal')">Agregar a la orden</button>
+    <!-- PRODUCTOS: TACOS & TORTAS -->
+    <div class="section-title">🌮 Tacos & Tortas</div>
+    <div class="horizontal-scroll">
+        <div class="product-card">
+            <img class="product-img" src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=400&q=80" alt="Tacos al Pastor">
+            <div class="product-name">Tacos al Pastor</div>
+            <div class="product-price">$8.00</div>
+            <button class="btn-customize" onclick="openCustomizer('Tacos al Pastor', 8.00, 'tacos')">+ Personalizar</button>
         </div>
+        <div class="product-card">
+            <img class="product-img" src="https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=400&q=80" alt="Torta Cubana">
+            <div class="product-name">Torta Cubana</div>
+            <div class="product-price">$10.50</div>
+            <button class="btn-customize" onclick="openCustomizer('Torta Cubana', 10.50, 'torta')">+ Personalizar</button>
+        </div>
+    </div>
+
+    <!-- PRODUCTOS: BEBIDAS -->
+    <div class="section-title">🥤 Bebidas & Extras</div>
+    <div class="horizontal-scroll">
+        <div class="product-card">
+            <img class="product-img" src="https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=400&q=80" alt="Refresco 600ml">
+            <div class="product-name">Refresco 600ml</div>
+            <div class="product-price">$2.50</div>
+            <button class="btn-customize" onclick="openCustomizer('Refresco 600ml', 2.50, 'bebida')">+ Personalizar</button>
+        </div>
+        <div class="product-card">
+            <img class="product-img" src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=400&q=80" alt="Papas Fritas">
+            <div class="product-name">Papas Fritas</div>
+            <div class="product-price">$4.00</div>
+            <button class="btn-customize" onclick="openCustomizer('Papas Fritas', 4.00, 'bebida')">+ Personalizar</button>
+        </div>
+    </div>
 
 
-        <div class="checkout-container">
-            <div class="checkout-title">Tu Pedido</div>
+    <!-- VENTANA MODAL PARA PERSONALIZACIÓN -->
+    <div class="modal-overlay" id="modal-customizer" onclick="closeCustomizerOnOutsideClick(event)">
+        <div class="modal-content">
+            <div class="modal-header-title" id="modal-product-title">Personalizar Producto</div>
             
-            <div id="cart-content">
-                <p class="cart-empty">Aún no has seleccionado ningún producto.</p>
-            </div>
+            <form id="customizer-form" onsubmit="handleAddToCart(event)">
+                <!-- Sección Dinámica Cambiante -->
+                <div id="modal-dynamic-options"></div>
 
-            <div class="cart-total">
-                <span>Total:</span>
-                <span id="cart-total-amount">$0.00</span>
-            </div>
-
-            <div class="checkout-title" style="margin-top: 30px; font-size: 1.4rem;">Método de Entrega</div>
-            
-            <div class="delivery-toggle">
-                <button type="button" class="toggle-btn active" id="btn-delivery" onclick="setDeliveryMethod('domicilio')">A Domicilio</button>
-                <button type="button" class="toggle-btn" id="btn-pickup" onclick="setDeliveryMethod('local')">Recoger en Local</button>
-            </div>
-
-            <form id="order-form" onsubmit="sendOrder(event)">
-                <div class="form-group">
-                    <label for="customer-name">Nombre Completo</label>
-                    <input type="text" id="customer-name" required placeholder="Ej. Miguel Castro">
+                <div class="modal-actions">
+                    <button type="submit" class="btn-confirm-order" style="background-color: var(--accent-color);">Añadir al Carrito</button>
+                    <button type="button" class="btn-cancel" onclick="closeCustomizer()">Cancelar</button>
                 </div>
-
-                <div class="form-group">
-                    <label for="customer-phone">Teléfono de Contacto</label>
-                    <input type="tel" id="customer-phone" required placeholder="Ej. 5512345678">
-                </div>
-
-                <div id="delivery-fields">
-                    <div class="form-group">
-                        <label for="customer-address">Dirección de Entrega</label>
-                        <input type="text" id="customer-address" placeholder="Calle, Número, Colonia">
-                    </div>
-                    <div class="form-group">
-                        <label for="customer-notes">Indicaciones adicionales de entrega</label>
-                        <textarea id="customer-notes" rows="2" placeholder="Ej. Entre calles, portón negro..."></textarea>
-                    </div>
-                </div>
-
-                <div id="pickup-fields" class="hidden">
-                    <div class="form-group">
-                        <label for="pickup-time">Hora aproximada de llegada</label>
-                        <input type="time" id="pickup-time">
-                    </div>
-                </div>
-
-                <button type="submit" class="btn-submit">Confirmar y Enviar por WhatsApp</button>
             </form>
         </div>
-    </main>
+    </div>
+
+
+    <!-- SECCIÓN DE LA COMANDA / ELEMENTOS SELECCIONADOS -->
+    <div class="comanda-container" id="comanda-seccion">
+        <div class="comanda-title">🛒 Tu Comanda</div>
+        
+        <div id="comanda-list">
+            <p style="text-align: center; color: #8E8E93; padding: 20px 0;">Tu comanda está vacía.</p>
+        </div>
+
+        <div class="coupon-box">
+            <input type="text" class="coupon-input" placeholder="¿Tienes un cupón?">
+            <button class="btn-apply">Aplicar</button>
+        </div>
+
+        <div class="comanda-total">
+            <span>Total:</span>
+            <span id="comanda-total-price">$0.00</span>
+        </div>
+
+        <!-- FORMULARIO DE RECOLECCIÓN / ENVÍO -->
+        <form id="delivery-form" onsubmit="generateTicket(event)">
+            <input type="text" id="form-name" class="input-field" placeholder="👤 Tu nombre" required>
+            
+            <select id="form-delivery-method" class="input-field" onchange="toggleDeliveryFields()" required>
+                <option value="domicilio">📍 Entrega a Domicilio</option>
+                <option value="local">🏪 Recoger en Local</option>
+            </select>
+
+            <div id="fields-domicilio">
+                <input type="text" id="form-address" class="input-field" placeholder="🏠 Dirección completa">
+                <input type="text" id="form-notes" class="input-field" placeholder="📝 Notas especiales (Ej: timbre descompuesto)">
+            </div>
+
+            <button type="submit" class="btn-confirm-order">Confirmar Pedido</button>
+        </form>
+
+        <!-- SECCIÓN TICKET FINAL PRE-WHATSAPP -->
+        <div class="ticket-box" id="ticket-final">
+            <div id="ticket-text" style="font-family: monospace; white-space: pre-wrap; font-size: 0.9rem; color: #000;"></div>
+            <button class="btn-whatsapp" onclick="sendToWhatsApp()">
+                💬 Enviar a WhatsApp
+            </button>
+        </div>
+    </div>
 
     <script>
         let cart = [];
-        let deliveryMethod = 'domicilio';
+        let currentItem = {};
 
-        function addToCart(itemId) {
-            const itemElement = document.querySelector(`.menu-item[data-id="${itemId}"]`);
-            const name = itemElement.getAttribute('data-name');
-            let price = parseFloat(itemElement.getAttribute('data-price'));
+        // Función para cambiar visualmente las tarjetas de la modal al dar click
+        function toggleOptionCard(element) {
+            const checkbox = element.querySelector('input[type="checkbox"]');
+            if (checkbox) {
+                checkbox.checked = !checkbox.checked;
+                if(checkbox.checked) {
+                    element.classList.add('selected');
+                } else {
+                    element.classList.remove('selected');
+                }
+            }
+        }
+
+        function openCustomizer(name, price, type) {
+            currentItem = { name, price, type };
+            document.getElementById('modal-product-title').innerText = `Personalizar ${name}`;
             
-            // Recoger personalizaciones seleccionadas
-            const checkboxes = itemElement.querySelectorAll('.custom-section input[type="checkbox"]:checked');
-            let specifications = [];
+            const optionsContainer = document.getElementById('modal-dynamic-options');
+            optionsContainer.innerHTML = ''; // Limpiar opciones previas
+
+            let htmlOptions = '';
+
+            if (type === 'burger' || type === 'torta' || type === 'tacos') {
+                htmlOptions += `
+                    <div class="modal-section-title">🌶️ Elige tus Salsas / Condimentos</div>
+                    <div class="options-grid">
+                        <div class="option-card" onclick="toggleOptionCard(this)">
+                            <span>Salsa Verde</span>
+                            <input type="checkbox" value="Salsa Verde">
+                            <div class="custom-checkbox"></div>
+                        </div>
+                        <div class="option-card" onclick="toggleOptionCard(this)">
+                            <span>Salsa Roja</span>
+                            <input type="checkbox" value="Salsa Roja">
+                            <div class="custom-checkbox"></div>
+                        </div>
+                        <div class="option-card" onclick="toggleOptionCard(this)">
+                            <span>Habanero</span>
+                            <input type="checkbox" value="Habanero">
+                            <div class="custom-checkbox"></div>
+                        </div>
+                        <div class="option-card" onclick="toggleOptionCard(this)">
+                            <span>BBQ</span>
+                            <input type="checkbox" value="BBQ">
+                            <div class="custom-checkbox"></div>
+                        </div>
+                    </div>
+
+                    <div class="modal-section-title">🥬 Ingredientes (Quitar / Agregar)</div>
+                    <div class="options-grid">
+                        <div class="option-card" onclick="toggleOptionCard(this)">
+                            <span>Sin Cebolla</span>
+                            <input type="checkbox" value="Sin Cebolla">
+                            <div class="custom-checkbox"></div>
+                        </div>
+                        <div class="option-card" onclick="toggleOptionCard(this)">
+                            <span>Sin Cilantro</span>
+                            <input type="checkbox" value="Sin Cilantro">
+                            <div class="custom-checkbox"></div>
+                        </div>
+                        <div class="option-card" onclick="toggleOptionCard(this)">
+                            <span>Sin Jitomate</span>
+                            <input type="checkbox" value="Sin Jitomate">
+                            <div class="custom-checkbox"></div>
+                        </div>
+                        <div class="option-card" onclick="toggleOptionCard(this)">
+                            <span>Extra Queso (+$1.50)</span>
+                            <input type="checkbox" value="Extra Queso" data-extra="1.50">
+                            <div class="custom-checkbox"></div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Tipo Bebida o Extras estándar
+                htmlOptions += `
+                    <div class="modal-section-title">🧊 Preferencias</div>
+                    <div class="options-grid">
+                        <div class="option-card" onclick="toggleOptionCard(this)">
+                            <span>Con Hielo</span>
+                            <input type="checkbox" value="Con Hielo">
+                            <div class="custom-checkbox"></div>
+                        </div>
+                        <div class="option-card" onclick="toggleOptionCard(this)">
+                            <span>Limón</span>
+                            <input type="checkbox" value="Con Limón">
+                            <div class="custom-checkbox"></div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            optionsContainer.innerHTML = htmlOptions;
+            document.getElementById('modal-customizer').style.display = 'flex';
+        }
+
+        function closeCustomizer() {
+            document.getElementById('modal-customizer').style.display = 'none';
+        }
+
+        function closeCustomizerOnOutsideClick(event) {
+            if(event.target.id === 'modal-customizer') closeCustomizer();
+        }
+
+        function handleAddToCart(event) {
+            event.preventDefault();
+            const checkedBoxes = document.querySelectorAll('#modal-dynamic-options input[type="checkbox"]:checked');
             
-            checkboxes.forEach(cb => {
-                specifications.push(cb.value);
-                // Si el modificador altera el precio (Ejemplo del Extra Queso)
-                if(cb.value.includes('+$15')) {
-                    price += 15;
+            let selectedSpecs = [];
+            let finalPrice = currentItem.price;
+
+            checkedBoxes.forEach(cb => {
+                selectedSpecs.push(cb.value);
+                if(cb.dataset.extra) {
+                    finalPrice += parseFloat(cb.dataset.extra);
                 }
             });
 
-            // Crear un identificador único basado en las especificaciones seleccionadas
-            const uniqueCartId = itemId + '-' + specifications.join('-');
-
             cart.push({
-                id: uniqueCartId,
-                name: name,
-                price: price,
-                specs: specifications
+                id: Date.now() + Math.random().toString(36).substr(2, 5),
+                name: currentItem.name,
+                price: finalPrice,
+                specs: selectedSpecs
             });
 
-            // Desmarcar los checkboxes tras agregar para una nueva selección limpia
-            checkboxes.forEach(cb => cb.checked = false);
-
+            closeCustomizer();
             renderCart();
         }
 
-        function removeFromCart(uniqueCartId) {
-            cart = cart.filter(item => item.id !== uniqueCartId);
+        function removeItem(id) {
+            cart = cart.filter(item => item.id !== id);
             renderCart();
         }
 
         function renderCart() {
-            const cartContent = document.getElementById('cart-content');
-            const totalAmountDisplay = document.getElementById('cart-total-amount');
-            
-            if (cart.length === 0) {
-                cartContent.innerHTML = '<p class="cart-empty">Aún no has seleccionado ningún producto.</p>';
-                totalAmountDisplay.innerText = '$0.00';
+            const comandaList = document.getElementById('comanda-list');
+            const totalDisplay = document.getElementById('comanda-total-price');
+            const navCount = document.getElementById('nav-cart-count');
+
+            navCount.innerText = cart.length;
+
+            if(cart.length === 0) {
+                comandaList.innerHTML = `<p style="text-align: center; color: #8E8E93; padding: 20px 0;">Tu comanda está vacía.</p>`;
+                totalDisplay.innerText = '$0.00';
                 return;
             }
 
-            cartContent.innerHTML = '';
+            comandaList.innerHTML = '';
             let total = 0;
 
             cart.forEach(item => {
                 total += item.price;
+                const row = document.createElement('div');
+                row.className = 'cart-item-row';
                 
-                const itemRow = document.createElement('div');
-                itemRow.className = 'cart-item';
-                
-                const specsText = item.specs.length > 0 ? item.specs.join(', ') : 'Original';
+                const specsLabel = item.specs.length > 0 ? item.specs.join(', ') : 'Sencillo';
 
-                itemRow.innerHTML = `
-                    <div class="cart-item-info">
+                row.innerHTML = `
+                    <div class="cart-item-left">
                         <h4>${item.name}</h4>
-                        <div class="cart-item-details">${specsText}</div>
+                        <p>${specsLabel}</p>
                     </div>
-                    <div class="cart-item-right">
-                        <span>$${item.price.toFixed(2)}</span>
-                        <button class="btn-remove" onclick="removeFromCart('${item.id}')">Quitar</button>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="font-weight: 700;">$${item.price.toFixed(2)}</span>
+                        <button class="btn-delete-item" onclick="removeItem('${item.id}')">✕</button>
                     </div>
                 `;
-                cartContent.appendChild(itemRow);
+                comandaList.appendChild(row);
             });
 
-            totalAmountDisplay.innerText = `$${total.toFixed(2)}`;
+            totalDisplay.innerText = `$${total.toFixed(2)}`;
         }
 
-        function setDeliveryMethod(method) {
-            deliveryMethod = method;
-            const btnDelivery = document.getElementById('btn-delivery');
-            const btnPickup = document.getElementById('btn-pickup');
-            const deliveryFields = document.getElementById('delivery-fields');
-            const pickupFields = document.getElementById('pickup-fields');
-
-            const addressInput = document.getElementById('customer-address');
-            const pickupTimeInput = document.getElementById('pickup-time');
-
-            if (method === 'domicilio') {
-                btnDelivery.classList.add('active');
-                btnPickup.classList.remove('active');
-                deliveryFields.classList.remove('hidden');
-                pickupFields.classList.add('hidden');
-                
-                addressInput.required = true;
-                pickupTimeInput.required = false;
+        function toggleDeliveryFields() {
+            const method = document.getElementById('form-delivery-method').value;
+            const fieldsDom = document.getElementById('fields-domicilio');
+            if(method === 'local') {
+                fieldsDom.classList.add('hidden');
             } else {
-                btnDelivery.classList.remove('active');
-                btnPickup.classList.add('active');
-                deliveryFields.classList.add('hidden');
-                pickupFields.classList.remove('hidden');
-                
-                addressInput.required = false;
-                pickupTimeInput.required = true;
+                fieldsDom.classList.remove('hidden');
             }
         }
 
-        // Configuración inicial de campos requeridos
-        document.getElementById('customer-address').required = true;
+        let compiledMessage = '';
 
-        function sendOrder(event) {
+        function generateTicket(event) {
             event.preventDefault();
-
-            if (cart.length === 0) {
-                alert('Por favor, agrega al menos un alimento a tu pedido.');
+            if(cart.length === 0) {
+                alert('Agrega productos a tu comanda antes de confirmar.');
                 return;
             }
 
-            const name = document.getElementById('customer-name').value;
-            const phone = document.getElementById('customer-phone').value;
-            
-            let message = `*NUEVO PEDIDO DE GOURMET STUDIO*\n\n`;
-            message += `*Cliente:* ${name}\n`;
-            message += `*Teléfono:* ${phone}\n`;
-            message += `*Tipo de entrega:* ${deliveryMethod === 'domicilio' ? 'A Domicilio' : 'Recoger en Local'}\n`;
+            const name = document.getElementById('form-name').value;
+            const method = document.getElementById('form-delivery-method').value;
+            const address = document.getElementById('form-address').value;
+            const notes = document.getElementById('form-notes').value;
+            const ticketNumber = Math.floor(1000 + Math.random() * 9000);
 
-            if (deliveryMethod === 'domicilio') {
-                const address = document.getElementById('customer-address').value;
-                const notes = document.getElementById('customer-notes').value;
-                message += `*Dirección:* ${address}\n`;
-                if(notes) message += `*Notas de entrega:* ${notes}\n`;
-            } else {
-                const time = document.getElementById('pickup-time').value;
-                message += `*Hora estimada de llegada:* ${time}\n`;
-            }
-
-            message += `\n*--- ARTÍCULOS ---*\n`;
-            
             let total = 0;
+            let itemsText = '';
             cart.forEach((item, index) => {
                 total += item.price;
-                const specsText = item.specs.length > 0 ? ` (${item.specs.join(', ')})` : '';
-                message += `${index + 1}. ${item.name}${specsText} - $${item.price.toFixed(2)}\n`;
+                const specsLabel = item.specs.length > 0 ? `(${item.specs.join(', ')})` : '(Sencillo)';
+                itemsText += `◾ ${item.name} ${specsLabel}\n`;
             });
 
-            message += `\n*TOTAL A PAGAR: $${total.toFixed(2)}*`;
+            compiledMessage = `✨ *TICKET DE ORDEN #${ticketNumber}*\n`;
+            compiledMessage += `👤 *Cliente:* ${name}\n`;
+            compiledMessage += `📍 *Entrega:* ${method === 'domicilio' ? 'Domicilio' : 'Recoger en Local'}\n`;
+            if (method === 'domicilio' && address) {
+                compiledMessage += `🏠 *Dirección:* ${address}\n`;
+                if(notes) compiledMessage += `📝 *Notas:* ${notes}\n`;
+            }
+            compiledMessage += `-----------------------------------\n`;
+            compiledMessage += itemsText;
+            compiledMessage += `-----------------------------------\n`;
+            compiledMessage += `💰 *TOTAL FINAL: $${total.toFixed(2)}*`;
 
-            // Codificar el mensaje para la URL de WhatsApp
-            const whatsappNumber = "5512345678"; // <--- REEMPLAZA CON TU NÚMERO DE TELÉFONO DE NEGOCIO REAL (incluyendo código de país sin el signo +)
-            const encodedMessage = encodeURIComponent(message);
+            document.getElementById('ticket-text').innerText = compiledMessage;
+            document.getElementById('ticket-final').style.display = 'block';
             
-            // Abrir API de WhatsApp
-            window.open(`https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${encodedMessage}`, '_blank');
+            // Auto scroll al ticket generado
+            document.getElementById('ticket-final').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function sendToWhatsApp() {
+            const targetPhone = "5512345678"; // <-- Reemplaza con tu número de WhatsApp real
+            const encoded = encodeURIComponent(compiledMessage);
+            window.open(`https://api.whatsapp.com/send?phone=${targetPhone}&text=${encoded}`, '_blank');
         }
     </script>
 </body>
