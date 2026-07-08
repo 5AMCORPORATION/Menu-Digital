@@ -425,7 +425,7 @@
         }
 
         .btn-whatsapp {
-            background-color: #25D366;
+            background-color: #FF4500;
             color: white;
             border: none;
             width: 100%;
@@ -565,11 +565,11 @@
             <button type="submit" class="btn-confirm-order">Confirmar Pedido</button>
         </form>
 
-        <!-- SECCIÓN TICKET FINAL PRE-WHATSAPP -->
+        <!-- SECCIÓN TICKET FINAL -->
         <div class="ticket-box" id="ticket-final">
             <div id="ticket-text" style="font-family: monospace; white-space: pre-wrap; font-size: 0.9rem; color: #000;"></div>
             <button class="btn-whatsapp" onclick="sendToWhatsApp()">
-                💬 Enviar a WhatsApp
+                🚀 Mandar Pedido a Cocina
             </button>
         </div>
     </div>
@@ -803,9 +803,49 @@
         }
 
         function sendToWhatsApp() {
-            const targetPhone = "5512345678"; // <-- Reemplaza con tu número de WhatsApp real
-            const encoded = encodeURIComponent(compiledMessage);
-            window.open(`https://api.whatsapp.com/send?phone=${targetPhone}&text=${encoded}`, '_blank');
+            // 1. Recuperar los pedidos existentes en memoria local para no sobreescribirlos
+            let pedidosActivos = JSON.parse(localStorage.getItem('pedidos_cocina')) || [];
+            
+            // 2. Extraer valores actuales de los campos del formulario
+            const name = document.getElementById('form-name').value;
+            const method = document.getElementById('form-delivery-method').value;
+            const address = document.getElementById('form-address').value;
+            const notes = document.getElementById('form-notes').value;
+            const ticketNumber = Math.floor(1000 + Math.random() * 9000);
+            
+            let total = 0;
+            let itemsArray = [];
+            
+            // 3. Estructurar los artículos del carrito para el panel de cocina
+            cart.forEach(item => {
+                total += item.price;
+                itemsArray.push({
+                    name: item.name,
+                    specs: item.specs.length > 0 ? item.specs.join(', ') : 'Sencillo'
+                });
+            });
+
+            // 4. Crear el objeto JSON del nuevo pedido
+            const nuevoPedido = {
+                id: ticketNumber,
+                cliente: name,
+                tipo: method,
+                direccion: method === 'domicilio' ? address : '',
+                notas: method === 'domicilio' ? notes : '',
+                articulos: itemsArray,
+                total: total.toFixed(2),
+                estado: 'pendiente',
+                hora: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+            };
+
+            // 5. Insertar al arreglo común y guardarlo en la base local compartida
+            pedidosActivos.push(nuevoPedido);
+            localStorage.setItem('pedidos_cocina', JSON.stringify(pedidosActivos));
+
+            alert('¡Pedido enviado correctamente al panel de cocina!');
+            
+            // 6. Redirección automática a la interfaz de tus operarios
+            window.location.href = 'cocina.html';
         }
     </script>
 </body>
