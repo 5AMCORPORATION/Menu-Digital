@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú Digital Premium</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #000000;
+            --surface-color: #1C1C1E;
+            --surface-secondary: #2C2C2E;
+            --accent-color: #FF4500;
+            --text-main: #FFFFFF;
+            --text-muted: #8E8E93;
+            --border-color: #3A3A3C;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.5;
+            padding-bottom: 100px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px 20px;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .category-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 30px 0 15px;
+            color: var(--accent-color);
+            letter-spacing: -0.3px;
+        }
+
+        .menu-item {
+            background-color: var(--surface-color);
+            border-radius: 18px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .menu-item:hover {
+            border-color: var(--accent-color);
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .item-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .item-price {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+
+        .item-description {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            font-weight: 300;
+        }
+
+        /* Opciones de Personalización */
+        .custom-section {
+            border-top: 1px solid var(--border-color);
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+
+        .custom-title {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            background-color: var(--surface-secondary);
+            padding: 10px 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            user-select: none;
+            border: 1px solid transparent;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+
+        .option-label input {
+            margin-right: 8px;
+            accent-color: var(--accent-color);
+        }
+
+        .option-label:has(input:checked) {
+            border-color: var(--accent-color);
+            background-color: rgba(255, 69, 0, 0.05);
+        }
+
+        .btn-add {
+            display: block;
+            width: 100%;
+            background-color: var(--accent-color);
+            color: var(--text-main);
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-add:hover {
+            opacity: 0.9;
+        }
+
+        /* Secciones de Checkout y Carrito */
+        .checkout-container {
+            background-color: var(--surface-color);
+            border-radius: 24px;
+            padding: 25px;
+            margin-top: 40px;
+            border: 1px solid var(--border-color);
+        }
+
+        .checkout-title {
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .cart-empty {
+            color: var(--text-muted);
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .cart-item-info h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .cart-item-details {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .cart-item-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .btn-remove {
+            background: none;
+            border: none;
+            color: #FF3B30;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin: 20px 0;
+        }
+
+        /* Formulario de Datos */
+        .delivery-toggle {
+            display: flex;
+            background-color: var(--surface-secondary);
+            padding: 4px;
+            border-radius: 14px;
+            margin-bottom: 20px;
+        }
+
+        .toggle-btn {
+            flex: 1;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            padding: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .toggle-btn.active {
+            background-color: var(--accent-color);
+            color: var(--text-main);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            background-color: var(--surface-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 14px;
+            color: var(--text-main);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: var(--accent-color);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .btn-submit {
+            display: block;
+            width: 100%;
+            background-color: #248A3D; /* Verde de éxito sutil */
+            color: #FFFFFF;
+            border: none;
+            padding: 16px;
+            border-radius: 14px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 25px;
+            transition: opacity 0.2s;
+        }
+
+        .btn-submit:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Gourmet Studio</h1>
+        <p>Alta cocina a tu alcance</p>
+    </header>
+
+    <main>
+        <div class="category-title">Platillos Fuertes</div>
+
+        <div class="menu-item" data-id="torta_cubana" data-name="Torta Cubana Premium" data-price="120">
+            <div class="item-header">
+                <span class="item-name">Torta Cubana Premium</span>
+                <span class="item-price">$120.00</span>
+            </div>
+            <div class="item-description">Pierna horneada, jamón, milanesa, queso gouda, aguacate fresco y aderezo de la casa.</div>
+            
+            <div class="custom-section">
+                <div class="custom-title">¿Qué vegetales deseas retirar?</div>
+                <div class="options-grid">
+                    <label class="option-label"><input type="checkbox" value="Sin Cebolla"> Sin Cebolla</label>
+                    <label class="option-label"><input type="checkbox" value="Sin Cilantro"> Sin Cilantro</label>
+                    <label class="option-label"><input type="checkbox" value="Sin Jitomate"> Sin Jitomate</label>
+                </div>
+
+                <div class="custom-title">Aderezos / Condimentos adicionales</div>
+                <div class="options-grid">
+                    <label class="option-label"><input type="checkbox" value="+ Mayonesa"> Extra Mayonesa</label>
+                    <label class="option-label"><input type="checkbox" value="+ Chipotle"> Salsa Chipotle</label>
+                </div>
+            </div>
+            <button class="btn-add" onclick="addToCart('torta_cubana')">Agregar a la orden</button>
+        </div>
+
+        <div class="menu-item" data-id="hamburguesa_apple" data-name="Burger Signature Noir" data-price="145">
+            <div class="item-header">
+                <span class="item-name">Burger Signature Noir</span>
+                <span class="item-price">$145.00</span>
+            </div>
+            <div class="item-description">180g de carne Angus premium, tocino ahumado, queso cheddar fundido y cebolla caramelizada.</div>
+            
+            <div class="custom-section">
+                <div class="custom-title">Personalización</div>
+                <div class="options-grid">
+                    <label class="option-label"><input type="checkbox" value="Sin Pepinillos"> Sin Pepinillos</label>
+                    <label class="option-label"><input type="checkbox" value="Sin Cebolla"> Sin Cebolla</label>
+                    <label class="option-label"><input type="checkbox" value="+ Doble Queso"> Extra Queso (+$15)</label>
+                </div>
+            </div>
+            <button class="btn-add" onclick="addToCart('hamburguesa_apple')">Agregar a la orden</button>
+        </div>
+
+        <div class="category-title">Bebidas y Elíxires</div>
+
+        <div class="menu-item" data-id="refresco_artesanal" data-name="Soda Orgánica de Naranja" data-price="45">
+            <div class="item-header">
+                <span class="item-name">Soda Orgánica de Naranja</span>
+                <span class="item-price">$45.00</span>
+            </div>
+            <div class="item-description">Elaborada artesanalmente con cítricos seleccionados y endulzada con miel de agave.</div>
+            <div class="custom-section">
+                <div class="custom-title">Opciones</div>
+                <div class="options-grid">
+                    <label class="option-label"><input type="checkbox" value="Con Hielo"> Con Hielo</label>
+                    <label class="option-label"><input type="checkbox" value="Con Limón"> Con Limón</label>
+                </div>
+            </div>
+            <button class="btn-add" onclick="addToCart('refresco_artesanal')">Agregar a la orden</button>
+        </div>
+
+
+        <div class="checkout-container">
+            <div class="checkout-title">Tu Pedido</div>
+            
+            <div id="cart-content">
+                <p class="cart-empty">Aún no has seleccionado ningún producto.</p>
+            </div>
+
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cart-total-amount">$0.00</span>
+            </div>
+
+            <div class="checkout-title" style="margin-top: 30px; font-size: 1.4rem;">Método de Entrega</div>
+            
+            <div class="delivery-toggle">
+                <button type="button" class="toggle-btn active" id="btn-delivery" onclick="setDeliveryMethod('domicilio')">A Domicilio</button>
+                <button type="button" class="toggle-btn" id="btn-pickup" onclick="setDeliveryMethod('local')">Recoger en Local</button>
+            </div>
+
+            <form id="order-form" onsubmit="sendOrder(event)">
+                <div class="form-group">
+                    <label for="customer-name">Nombre Completo</label>
+                    <input type="text" id="customer-name" required placeholder="Ej. Miguel Castro">
+                </div>
+
+                <div class="form-group">
+                    <label for="customer-phone">Teléfono de Contacto</label>
+                    <input type="tel" id="customer-phone" required placeholder="Ej. 5512345678">
+                </div>
+
+                <div id="delivery-fields">
+                    <div class="form-group">
+                        <label for="customer-address">Dirección de Entrega</label>
+                        <input type="text" id="customer-address" placeholder="Calle, Número, Colonia">
+                    </div>
+                    <div class="form-group">
+                        <label for="customer-notes">Indicaciones adicionales de entrega</label>
+                        <textarea id="customer-notes" rows="2" placeholder="Ej. Entre calles, portón negro..."></textarea>
+                    </div>
+                </div>
+
+                <div id="pickup-fields" class="hidden">
+                    <div class="form-group">
+                        <label for="pickup-time">Hora aproximada de llegada</label>
+                        <input type="time" id="pickup-time">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit">Confirmar y Enviar por WhatsApp</button>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        let cart = [];
+        let deliveryMethod = 'domicilio';
+
+        function addToCart(itemId) {
+            const itemElement = document.querySelector(`.menu-item[data-id="${itemId}"]`);
+            const name = itemElement.getAttribute('data-name');
+            let price = parseFloat(itemElement.getAttribute('data-price'));
+            
+            // Recoger personalizaciones seleccionadas
+            const checkboxes = itemElement.querySelectorAll('.custom-section input[type="checkbox"]:checked');
+            let specifications = [];
+            
+            checkboxes.forEach(cb => {
+                specifications.push(cb.value);
+                // Si el modificador altera el precio (Ejemplo del Extra Queso)
+                if(cb.value.includes('+$15')) {
+                    price += 15;
+                }
+            });
+
+            // Crear un identificador único basado en las especificaciones seleccionadas
+            const uniqueCartId = itemId + '-' + specifications.join('-');
+
+            cart.push({
+                id: uniqueCartId,
+                name: name,
+                price: price,
+                specs: specifications
+            });
+
+            // Desmarcar los checkboxes tras agregar para una nueva selección limpia
+            checkboxes.forEach(cb => cb.checked = false);
+
+            renderCart();
+        }
+
+        function removeFromCart(uniqueCartId) {
+            cart = cart.filter(item => item.id !== uniqueCartId);
+            renderCart();
+        }
+
+        function renderCart() {
+            const cartContent = document.getElementById('cart-content');
+            const totalAmountDisplay = document.getElementById('cart-total-amount');
+            
+            if (cart.length === 0) {
+                cartContent.innerHTML = '<p class="cart-empty">Aún no has seleccionado ningún producto.</p>';
+                totalAmountDisplay.innerText = '$0.00';
+                return;
+            }
+
+            cartContent.innerHTML = '';
+            let total = 0;
+
+            cart.forEach(item => {
+                total += item.price;
+                
+                const itemRow = document.createElement('div');
+                itemRow.className = 'cart-item';
+                
+                const specsText = item.specs.length > 0 ? item.specs.join(', ') : 'Original';
+
+                itemRow.innerHTML = `
+                    <div class="cart-item-info">
+                        <h4>${item.name}</h4>
+                        <div class="cart-item-details">${specsText}</div>
+                    </div>
+                    <div class="cart-item-right">
+                        <span>$${item.price.toFixed(2)}</span>
+                        <button class="btn-remove" onclick="removeFromCart('${item.id}')">Quitar</button>
+                    </div>
+                `;
+                cartContent.appendChild(itemRow);
+            });
+
+            totalAmountDisplay.innerText = `$${total.toFixed(2)}`;
+        }
+
+        function setDeliveryMethod(method) {
+            deliveryMethod = method;
+            const btnDelivery = document.getElementById('btn-delivery');
+            const btnPickup = document.getElementById('btn-pickup');
+            const deliveryFields = document.getElementById('delivery-fields');
+            const pickupFields = document.getElementById('pickup-fields');
+
+            const addressInput = document.getElementById('customer-address');
+            const pickupTimeInput = document.getElementById('pickup-time');
+
+            if (method === 'domicilio') {
+                btnDelivery.classList.add('active');
+                btnPickup.classList.remove('active');
+                deliveryFields.classList.remove('hidden');
+                pickupFields.classList.add('hidden');
+                
+                addressInput.required = true;
+                pickupTimeInput.required = false;
+            } else {
+                btnDelivery.classList.remove('active');
+                btnPickup.classList.add('active');
+                deliveryFields.classList.add('hidden');
+                pickupFields.classList.remove('hidden');
+                
+                addressInput.required = false;
+                pickupTimeInput.required = true;
+            }
+        }
+
+        // Configuración inicial de campos requeridos
+        document.getElementById('customer-address').required = true;
+
+        function sendOrder(event) {
+            event.preventDefault();
+
+            if (cart.length === 0) {
+                alert('Por favor, agrega al menos un alimento a tu pedido.');
+                return;
+            }
+
+            const name = document.getElementById('customer-name').value;
+            const phone = document.getElementById('customer-phone').value;
+            
+            let message = `*NUEVO PEDIDO DE GOURMET STUDIO*\n\n`;
+            message += `*Cliente:* ${name}\n`;
+            message += `*Teléfono:* ${phone}\n`;
+            message += `*Tipo de entrega:* ${deliveryMethod === 'domicilio' ? 'A Domicilio' : 'Recoger en Local'}\n`;
+
+            if (deliveryMethod === 'domicilio') {
+                const address = document.getElementById('customer-address').value;
+                const notes = document.getElementById('customer-notes').value;
+                message += `*Dirección:* ${address}\n`;
+                if(notes) message += `*Notas de entrega:* ${notes}\n`;
+            } else {
+                const time = document.getElementById('pickup-time').value;
+                message += `*Hora estimada de llegada:* ${time}\n`;
+            }
+
+            message += `\n*--- ARTÍCULOS ---*\n`;
+            
+            let total = 0;
+            cart.forEach((item, index) => {
+                total += item.price;
+                const specsText = item.specs.length > 0 ? ` (${item.specs.join(', ')})` : '';
+                message += `${index + 1}. ${item.name}${specsText} - $${item.price.toFixed(2)}\n`;
+            });
+
+            message += `\n*TOTAL A PAGAR: $${total.toFixed(2)}*`;
+
+            // Codificar el mensaje para la URL de WhatsApp
+            const whatsappNumber = "5512345678"; // <--- REEMPLAZA CON TU NÚMERO DE TELÉFONO DE NEGOCIO REAL (incluyendo código de país sin el signo +)
+            const encodedMessage = encodeURIComponent(message);
+            
+            // Abrir API de WhatsApp
+            window.open(`https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${encodedMessage}`, '_blank');
+        }
+    </script>
+</body>
+</html>
