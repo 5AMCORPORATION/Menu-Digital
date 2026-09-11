@@ -1,482 +1,852 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AUREUS | Soluciones Corporativas</title>
-  
-  <!-- Iconos Lucide -->
-  <script src="https://unpkg.com/lucide@latest"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Street Food Pro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Impact&family=SF+Pro+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #000000;
+            --surface-color: #121212;
+            --card-bg: #1C1C1E;
+            --accent-color: #FF4500;
+            --text-main: #FFFFFF;
+            --text-muted: #8E8E93;
+            --border-color: #2C2C2E;
+        }
 
-  <style>
-    /* ==========================================
-       VARIABLES Y CONFIGURACIÓN CORPORATIVA
-       ========================================== */
-    :root {
-      --bg-dark: #0A0D14;
-      --surface-card: rgba(18, 24, 38, 0.75);
-      --surface-hover: rgba(255, 255, 255, 0.03);
-      --border-subtle: rgba(255, 255, 255, 0.08);
-      --border-active: rgba(0, 96, 57, 0.5);
-      
-      --primary: #006039;
-      --primary-light: #00844F;
-      --text-main: #F2F2F7;
-      --text-muted: #8E8E93;
-      
-      --shadow-elevation: 0 20px 40px -15px rgba(0, 0, 0, 0.62);
-      --shadow-glow: 0 0 25px rgba(0, 96, 57, 0.18);
-      --transition-smooth: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'SF Pro Display', -apple-system, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding-bottom: 40px;
+            overflow-x: hidden;
+        }
 
-    body {
-      background-color: var(--bg-dark);
-      color: var(--text-main);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      overflow-x: hidden;
-    }
+        /* Navbar fija superior estilo Apple */
+        .navbar {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            height: 60px;
+            background-color: rgba(28, 28, 30, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 100;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
 
-    /* ==========================================
-       CONTENEDOR Y BARRA DE NAVEGACIÓN
-       ========================================== */
-    .navbar-container {
-      width: 92%;
-      max-width: 1200px;
-      position: sticky;
-      top: 1.5rem;
-      z-index: 1000;
-      margin-top: 1.5rem;
-    }
+        .navbar-brand {
+            font-family: 'SF Pro Display', sans-serif;
+            font-weight: 700;
+            color: var(--accent-color);
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+        }
 
-    .navbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.85rem 1.75rem;
-      background: var(--surface-card);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--border-subtle);
-      border-radius: 16px;
-      box-shadow: var(--shadow-elevation);
-      position: relative;
-    }
+        .cart-badge {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
 
-    .navbar::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 15%;
-      width: 70%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
-      pointer-events: none;
-    }
+        /* Hero Header con imagen de fondo */
+        .hero {
+            position: relative;
+            height: 340px;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.2), #000000), 
+                        url('https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=600&q=80') center center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px 30px;
+        }
 
-    .brand-logo {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      text-decoration: none;
-      color: var(--text-main);
-    }
+        .hero h1 {
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            font-size: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-main);
+            line-height: 1.1;
+        }
 
-    .logo-icon {
-      width: 38px;
-      height: 38px;
-      background: linear-gradient(135deg, var(--primary-light), var(--primary));
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #FFFFFF;
-      box-shadow: 0 4px 12px rgba(0, 96, 57, 0.35);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-    }
+        .hero p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-top: 8px;
+            max-width: 280px;
+        }
 
-    .brand-name {
-      font-weight: 700;
-      font-size: 1.15rem;
-      letter-spacing: 1.5px;
-    }
+        /* Listas de categorías y scroll horizontal */
+        .section-title {
+            font-family: 'Impact', sans-serif;
+            font-size: 1.6rem;
+            text-transform: uppercase;
+            color: var(--accent-color);
+            letter-spacing: 1px;
+            margin: 25px 20px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-    .brand-dot {
-      color: var(--primary-light);
-    }
+        .horizontal-scroll {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding: 5px 20px 15px;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+        }
 
-    .nav-menu {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      list-style: none;
-    }
+        .horizontal-scroll::-webkit-scrollbar {
+            display: none;
+        }
 
-    .nav-link {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      padding: 0.6rem 1.1rem;
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.92rem;
-      font-weight: 500;
-      border-radius: 8px;
-      border: 1px solid transparent;
-      transition: var(--transition-smooth);
-    }
+        /* Tarjetas de Producto */
+        .product-card {
+            background-color: var(--card-bg);
+            border-radius: 24px;
+            min-width: 200px;
+            width: 200px;
+            scroll-snap-align: start;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+        }
 
-    .nav-link i {
-      width: 18px;
-      height: 18px;
-      opacity: 0.75;
-      transition: var(--transition-smooth);
-    }
+        .product-img {
+            width: 100%;
+            height: 140px;
+            border-radius: 18px;
+            object-fit: cover;
+            background-color: #2c2c2e;
+        }
 
-    .nav-link:hover {
-      color: var(--text-main);
-      background: rgba(255, 255, 255, 0.04);
-      border-color: rgba(255, 255, 255, 0.05);
-    }
+        .product-name {
+            font-family: 'Impact', sans-serif;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
-    .nav-link:hover i {
-      opacity: 1;
-      color: var(--primary-light);
-    }
+        .product-price {
+            color: var(--accent-color);
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin: 6px 0 12px;
+        }
 
-    .nav-link.active {
-      color: #FFFFFF;
-      background: rgba(0, 96, 57, 0.15);
-      border-color: var(--border-active);
-      box-shadow: var(--shadow-glow);
-    }
+        .btn-customize {
+            background-color: var(--accent-color);
+            color: var(--text-main);
+            border: none;
+            padding: 10px;
+            border-radius: 14px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(255, 69, 0, 0.2);
+        }
 
-    .nav-link.active i {
-      opacity: 1;
-      color: var(--primary-light);
-    }
+        /* VENTANA MODAL FLOTANTE (Pop-up de Personalización) */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0, 0, 0, 0.75);
+            z-index: 200;
+            display: none;
+            justify-content: center;
+            align-items: flex-end;
+        }
 
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-    }
+        .modal-content {
+            background-color: var(--card-bg);
+            width: 100%;
+            max-height: 85vh;
+            border-top-left-radius: 30px;
+            border-top-right-radius: 30px;
+            padding: 24px;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease-out;
+        }
 
-    .phone-contact {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      color: var(--text-main);
-      text-decoration: none;
-      font-size: 0.88rem;
-      font-weight: 600;
-      padding: 0.6rem 1rem;
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--border-subtle);
-      transition: var(--transition-smooth);
-    }
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
 
-    .phone-contact i {
-      width: 16px;
-      height: 16px;
-      color: var(--primary-light);
-    }
+        .modal-header-title {
+            font-family: 'Impact', sans-serif;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
 
-    .phone-contact:hover {
-      background: rgba(255, 255, 255, 0.07);
-      border-color: rgba(255, 255, 255, 0.15);
-    }
+        .modal-section-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 15px 0 10px;
+        }
 
-    .btn-primary {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: linear-gradient(135deg, var(--primary-light), var(--primary));
-      color: #FFFFFF;
-      text-decoration: none;
-      font-size: 0.9rem;
-      font-weight: 600;
-      padding: 0.65rem 1.25rem;
-      border-radius: 8px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
-      position: relative;
-      overflow: hidden;
-      transition: var(--transition-smooth);
-    }
+        /* Cuadrícula de opciones tipo botones grandes táctiles */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 15px;
+        }
 
-    .btn-primary::after {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -60%;
-      width: 50%;
-      height: 200%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
-      transform: rotate(25deg);
-      transition: var(--transition-smooth);
-    }
+        .option-card {
+            background-color: #121212;
+            border: 2px solid transparent;
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            position: relative;
+        }
 
-    .btn-primary:hover {
-      box-shadow: 0 6px 20px rgba(0, 96, 57, 0.4);
-      transform: translateY(-1px);
-    }
+        .option-card input {
+            position: absolute;
+            opacity: 0;
+        }
 
-    .btn-primary:hover::after {
-      left: 130%;
-      transition: all 0.6s ease;
-    }
+        .option-card .custom-checkbox {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 2px solid var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-    /* ==========================================
-       SECCIÓN HERO (SECCIÓN PRINCIPAL)
-       ========================================== */
-    .hero-section {
-      width: 92%;
-      max-width: 1200px;
-      padding: 6rem 1rem 4rem 1rem;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+        .option-card input:checked + .custom-checkbox {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
 
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.4rem 1rem;
-      border-radius: 20px;
-      background: rgba(0, 96, 57, 0.12);
-      border: 1px solid var(--border-active);
-      color: var(--primary-light);
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 1.5rem;
-    }
+        .option-card input:checked + .custom-checkbox::after {
+            content: '✓';
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
 
-    .badge i {
-      width: 14px;
-      height: 14px;
-    }
+        .option-card.selected {
+            border-color: var(--accent-color);
+            background-color: rgba(255, 69, 0, 0.05);
+        }
 
-    .hero-title {
-      font-size: 3.2rem;
-      font-weight: 800;
-      line-height: 1.15;
-      letter-spacing: -0.5px;
-      margin-bottom: 1.2rem;
-      max-width: 850px;
-    }
+        .modal-actions {
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
 
-    .hero-title span {
-      background: linear-gradient(135deg, #FFFFFF, var(--text-muted));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+        .btn-cancel {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            padding: 10px;
+            cursor: pointer;
+        }
 
-    .hero-subtitle {
-      font-size: 1.1rem;
-      color: var(--text-muted);
-      max-width: 650px;
-      line-height: 1.6;
-      margin-bottom: 2.5rem;
-    }
+        /* CONTENEDOR DE LA COMANDA (Fondo Blanco Elegante Abajo) */
+        .comanda-container {
+            background-color: #FFFFFF;
+            color: #000000;
+            border-radius: 30px;
+            margin: 30px 15px;
+            padding: 24px;
+        }
 
-    /* ==========================================
-       SECCIÓN DE SERVICIOS
-       ========================================== */
-    .services-section {
-      width: 92%;
-      max-width: 1200px;
-      padding: 4rem 0;
-    }
+        .comanda-title {
+            font-family: 'Impact', sans-serif;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
 
-    .section-header {
-      margin-bottom: 2.5rem;
-    }
+        .cart-item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid #E5E5EA;
+        }
 
-    .section-title {
-      font-size: 1.8rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
+        .cart-item-left h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
 
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-    }
+        .cart-item-left p {
+            font-size: 0.85rem;
+            color: #8E8E93;
+        }
 
-    .service-card {
-      background: var(--surface-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 14px;
-      padding: 2rem;
-      transition: var(--transition-smooth);
-      position: relative;
-    }
+        .btn-delete-item {
+            background: none;
+            border: none;
+            color: #FF3B30;
+            font-size: 1.3rem;
+            font-weight: bold;
+            cursor: pointer;
+            padding-left: 10px;
+        }
 
-    .service-card:hover {
-      border-color: rgba(0, 96, 57, 0.4);
-      transform: translateY(-3px);
-      box-shadow: var(--shadow-elevation);
-    }
+        .coupon-box {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
 
-    .card-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 10px;
-      background: rgba(0, 96, 57, 0.15);
-      color: var(--primary-light);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 1.25rem;
-    }
+        .coupon-input {
+            flex: 1;
+            border: 2px dashed var(--accent-color);
+            border-radius: 14px;
+            padding: 12px;
+            font-size: 1rem;
+            outline: none;
+            text-align: center;
+        }
 
-    .service-card h3 {
-      font-size: 1.2rem;
-      font-weight: 600;
-      margin-bottom: 0.6rem;
-    }
+        .btn-apply {
+            background-color: #000000;
+            color: #FFFFFF;
+            border: none;
+            padding: 0 20px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
 
-    .service-card p {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      line-height: 1.5;
-    }
+        .comanda-total {
+            font-family: 'Impact', sans-serif;
+            font-size: 1.6rem;
+            text-transform: uppercase;
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
 
-    /* ==========================================
-       FOOTER (PIE DE PÁGINA)
-       ========================================== */
-    footer {
-      width: 100%;
-      border-top: 1px solid var(--border-subtle);
-      margin-top: auto;
-      padding: 2rem 0;
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 0.85rem;
-    }
-  </style>
+        /* Inputs del Formulario */
+        .input-field {
+            width: 100%;
+            background-color: #F2F2F7;
+            border: 1px solid #E5E5EA;
+            border-radius: 14px;
+            padding: 14px 16px;
+            font-size: 1rem;
+            color: #000000;
+            margin-bottom: 12px;
+            outline: none;
+        }
+
+        select.input-field {
+            appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M0 0l5 5 5-5z' fill='%23000000'/></svg>");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+        }
+
+        .btn-confirm-order {
+            background-color: #FF4500;
+            color: #FFFFFF;
+            border: none;
+            width: 100%;
+            padding: 16px;
+            border-radius: 20px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(255, 69, 0, 0.3);
+            cursor: pointer;
+        }
+
+        /* Ticket de confirmación listo para enviar */
+        .ticket-box {
+            border: 2px dashed #000000;
+            border-radius: 16px;
+            padding: 16px;
+            margin-top: 20px;
+            background-color: #FAF9F6;
+            display: none;
+        }
+
+        .btn-whatsapp {
+            background-color: #FF4500;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 14px;
+            border-radius: 14px;
+            font-weight: bold;
+            font-size: 1rem;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .hidden { display: none !important; }
+    </style>
 </head>
 <body>
 
-  <!-- BARRA DE NAVEGACIÓN -->
-  <header class="navbar-container">
+    <!-- BARRA DE NAVEGACIÓN SUPERIOR -->
     <nav class="navbar">
-      <!-- Identidad de Marca -->
-      <a href="#" class="brand-logo">
-        <div class="logo-icon">
-          <i data-lucide="shield-check"></i>
-        </div>
-        <span class="brand-name">AUREUS<span class="brand-dot">.</span></span>
-      </a>
-
-      <!-- Menú de Navegación -->
-      <ul class="nav-menu">
-        <li class="nav-item">
-          <a href="#" class="nav-link active">
-            <i data-lucide="layout-dashboard"></i>
-            <span>Inicio</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#servicios" class="nav-link">
-            <i data-lucide="briefcase"></i>
-            <span>Servicios</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#soluciones" class="nav-link">
-            <i data-lucide="bar-chart-3"></i>
-            <span>Soluciones</span>
-          </a>
-        </li>
-      </ul>
-
-      <!-- Contacto Directo y CTA -->
-      <div class="nav-actions">
-        <a href="https://wa.me/525571953406" target="_blank" class="phone-contact" title="Contactar por WhatsApp">
-          <i data-lucide="phone"></i>
-          <span>55 7195 3406</span>
+        <div class="navbar-brand">STREET FOOD PRO</div>
+        <a href="#comanda-seccion" class="cart-badge">
+            🛍️ <span id="nav-cart-count">0</span>
         </a>
-        <a href="https://wa.me/525571953406" target="_blank" class="btn-primary">
-          <span>Comenzar</span>
-          <i data-lucide="arrow-right"></i>
-        </a>
-      </div>
     </nav>
-  </header>
 
-  <!-- CONTENIDO PRINCIPAL DE LA PÁGINA -->
-  <main>
-    <!-- HERO SECTION -->
-    <section class="hero-section">
-      <div class="badge">
-        <i data-lucide="sparkles"></i>
-        <span>Infraestructura Digital Corporativa</span>
-      </div>
-      <h1 class="hero-title">
-        <span>Diseño & Soluciones Digitales de Alto Rendimiento</span>
-      </h1>
-      <p class="hero-subtitle">
-        Desarrollamos soluciones web avanzadas y arquitecturas sólidas pensadas para escalar su negocio con seriedad, estética moderna y eficiencia tecnológica.
-      </p>
-    </section>
+    <!-- HEADER HERO -->
+    <header class="hero">
+        <h1>Sabor al Límite</h1>
+        <p>Personaliza tu orden al máximo y recibe el verdadero sabor de la calle.</p>
+    </header>
 
-    <!-- SERVICIOS -->
-    <section id="servicios" class="services-section">
-      <div class="section-header">
-        <h2 class="section-title">Servicios Especializados</h2>
-      </div>
+    <!-- PRODUCTOS: HAMBURGUESAS -->
+    <div class="section-title">🍔 Hamburguesas</div>
+    <div class="horizontal-scroll">
+        <div class="product-card">
+            <img class="product-img" src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=400&q=80" alt="Doble Cheese">
+            <div class="product-name">Doble Cheese</div>
+            <div class="product-price">$12.50</div>
+            <button class="btn-customize" onclick="openCustomizer('Doble Cheese', 12.50, 'burger')">+ Personalizar</button>
+        </div>
+        <div class="product-card">
+            <img class="product-img" src="https://images.unsplash.com/photo-1553979459-d2229ba7433b?auto=format&fit=crop&w=400&q=80" alt="Bacon Monster">
+            <div class="product-name">Bacon Monster</div>
+            <div class="product-price">$14.00</div>
+            <button class="btn-customize" onclick="openCustomizer('Bacon Monster', 14.00, 'burger')">+ Personalizar</button>
+        </div>
+    </div>
 
-      <div class="services-grid">
-        <div class="service-card">
-          <div class="card-icon">
-            <i data-lucide="code-2"></i>
-          </div>
-          <h3>Desarrollo Web</h3>
-          <p>Creación de sitios y plataformas con enfoque profesional, optimizados para velocidad, seguridad y escalabilidad.</p>
+    <!-- PRODUCTOS: TACOS & TORTAS -->
+    <div class="section-title">🌮 Tacos & Tortas</div>
+    <div class="horizontal-scroll">
+        <div class="product-card">
+            <img class="product-img" src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=400&q=80" alt="Tacos al Pastor">
+            <div class="product-name">Tacos al Pastor</div>
+            <div class="product-price">$8.00</div>
+            <button class="btn-customize" onclick="openCustomizer('Tacos al Pastor', 8.00, 'tacos')">+ Personalizar</button>
+        </div>
+        <div class="product-card">
+            <img class="product-img" src="https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=400&q=80" alt="Torta Cubana">
+            <div class="product-name">Torta Cubana</div>
+            <div class="product-price">$10.50</div>
+            <button class="btn-customize" onclick="openCustomizer('Torta Cubana', 10.50, 'torta')">+ Personalizar</button>
+        </div>
+    </div>
+
+    <!-- PRODUCTOS: BEBIDAS -->
+    <div class="section-title">🥤 Bebidas & Extras</div>
+    <div class="horizontal-scroll">
+        <div class="product-card">
+            <img class="product-img" src="https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=400&q=80" alt="Refresco 600ml">
+            <div class="product-name">Refresco 600ml</div>
+            <div class="product-price">$2.50</div>
+            <button class="btn-customize" onclick="openCustomizer('Refresco 600ml', 2.50, 'bebida')">+ Personalizar</button>
+        </div>
+        <div class="product-card">
+            <img class="product-img" src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=400&q=80" alt="Papas Fritas">
+            <div class="product-name">Papas Fritas</div>
+            <div class="product-price">$4.00</div>
+            <button class="btn-customize" onclick="openCustomizer('Papas Fritas', 4.00, 'bebida')">+ Personalizar</button>
+        </div>
+    </div>
+
+
+    <!-- VENTANA MODAL PARA PERSONALIZACIÓN -->
+    <div class="modal-overlay" id="modal-customizer" onclick="closeCustomizerOnOutsideClick(event)">
+        <div class="modal-content">
+            <div class="modal-header-title" id="modal-product-title">Personalizar Producto</div>
+            
+            <form id="customizer-form" onsubmit="handleAddToCart(event)">
+                <!-- Sección Dinámica Cambiante -->
+                <div id="modal-dynamic-options"></div>
+
+                <div class="modal-actions">
+                    <button type="submit" class="btn-confirm-order" style="background-color: var(--accent-color);">Añadir al Carrito</button>
+                    <button type="button" class="btn-cancel" onclick="closeCustomizer()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- SECCIÓN DE LA COMANDA / ELEMENTOS SELECCIONADOS -->
+    <div class="comanda-container" id="comanda-seccion">
+        <div class="comanda-title">🛒 Tu Comanda</div>
+        
+        <div id="comanda-list">
+            <p style="text-align: center; color: #8E8E93; padding: 20px 0;">Tu comanda está vacía.</p>
         </div>
 
-        <div class="service-card">
-          <div class="card-icon">
-            <i data-lucide="shopping-bag"></i>
-          </div>
-          <h3>E-Commerce</h3>
-          <p>Soluciones de comercio electrónico personalizadas diseñadas para convertir clientes y agilizar ventas.</p>
+        <div class="coupon-box">
+            <input type="text" class="coupon-input" placeholder="¿Tienes un cupón?">
+            <button class="btn-apply">Aplicar</button>
         </div>
 
-        <div class="service-card">
-          <div class="card-icon">
-            <i data-lucide="line-chart"></i>
-          </div>
-          <h3>Estrategia Digital</h3>
-          <p>Optimización y posicionamiento empresarial para maximizar la presencia corporativa de su marca.</p>
+        <div class="comanda-total">
+            <span>Total:</span>
+            <span id="comanda-total-price">$0.00</span>
         </div>
-      </div>
-    </section>
-  </main>
 
-  <!-- FOOTER -->
-  <footer>
-    <p>&copy; 2026 AUREUS. Todos los derechos reservados.</p>
-  </footer>
+        <!-- FORMULARIO DE RECOLECCIÓN / ENVÍO -->
+        <form id="delivery-form" onsubmit="generateTicket(event)">
+            <input type="text" id="form-name" class="input-field" placeholder="👤 Tu nombre" required>
+            
+            <select id="form-delivery-method" class="input-field" onchange="toggleDeliveryFields()" required>
+                <option value="domicilio">📍 Entrega a Domicilio</option>
+                <option value="local">🏪 Recoger en Local</option>
+            </select>
 
-  <script>
-    // Inicializar los iconos Lucide
-    lucide.createIcons();
-  </script>
+            <div id="fields-domicilio">
+                <input type="text" id="form-address" class="input-field" placeholder="🏠 Dirección completa">
+                <input type="text" id="form-notes" class="input-field" placeholder="📝 Notas especiales (Ej: timbre descompuesto)">
+            </div>
+
+            <button type="submit" class="btn-confirm-order">Confirmar Pedido</button>
+        </form>
+
+        <!-- SECCIÓN TICKET FINAL -->
+        <div class="ticket-box" id="ticket-final">
+            <div id="ticket-text" style="font-family: monospace; white-space: pre-wrap; font-size: 0.9rem; color: #000;"></div>
+            <button class="btn-whatsapp" onclick="sendToWhatsApp()">
+                🚀 Mandar Pedido a Cocina
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let cart = [];
+        let currentItem = {};
+
+        // Función para cambiar visualmente las tarjetas de la modal al dar click
+        function toggleOptionCard(element) {
+            const checkbox = element.querySelector('input[type="checkbox"]');
+            if (checkbox) {
+                checkbox.checked = !checkbox.checked;
+                if(checkbox.checked) {
+                    element.classList.add('selected');
+                } else {
+                    element.classList.remove('selected');
+                }
+            }
+        }
+
+        function openCustomizer(name, price, type) {
+            currentItem = { name, price, type };
+            document.getElementById('modal-product-title').innerText = `Personalizar ${name}`;
+            
+            const optionsContainer = document.getElementById('modal-dynamic-options');
+            optionsContainer.innerHTML = ''; // Limpiar opciones previas
+
+            let htmlOptions = '';
+
+            if (type === 'burger' || type === 'torta' || type === 'tacos') {
+                htmlOptions += `
+                    <div class="modal-section-title">🌶️ Elige tus Salsas / Condimentos</div>
+                    <div class="options-grid">
+                        <div class="option-card" onclick="toggleOptionCard(this)">
+                            <span>Salsa Verde</span>
+                            <input type="checkbox" value="Salsa Verde">
+                            <div class="custom-checkbox"></div>
+                        </div>
+                        <div class="option-card" onclick="toggleOptionCard(this)">
+                            <span>Salsa Roja</span>
+                            <input type="checkbox" value="Salsa Roja">
+                            <div class="custom-checkbox"></div>
+                        </div>
+                        <div class="option-card" onclick="toggleOptionCard(this)">
+                            <span>Habanero</span>
+                            <input type="checkbox" value="Habanero">
+                            <div class="custom-checkbox"></div>
+                        </div>
+                        <div class="option-card" onclick="toggleOptionCard(this)">
+                            <span>BBQ</span>
+                            <input type="checkbox" value="BBQ">
+                            <div class="custom-checkbox"></div>
+                        </div>
+                    </div>
+
+                    <div class="modal-section-title">🥬 Ingredientes (Quitar / Agregar)</div>
+                    <div class="options-grid">
+                        <div class="option-card" onclick="toggleOptionCard(this)">
+                            <span>Sin Cebolla</span>
+                            <input type="checkbox" value="Sin Cebolla">
+                            <div class="custom-checkbox"></div>
+                        </div>
+                        <div class="option-card" onclick="toggleOptionCard(this)">
+                            <span>Sin Cilantro</span>
+                            <input type="checkbox" value="Sin Cilantro">
+                            <div class="custom-checkbox"></div>
+                        </div>
+                        <div class="option-card" onclick="toggleOptionCard(this)">
+                            <span>Sin Jitomate</span>
+                            <input type="checkbox" value="Sin Jitomate">
+                            <div class="custom-checkbox"></div>
+                        </div>
+                        <div class="option-card" onclick="toggleOptionCard(this)">
+                            <span>Extra Queso (+$1.50)</span>
+                            <input type="checkbox" value="Extra Queso" data-extra="1.50">
+                            <div class="custom-checkbox"></div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Tipo Bebida o Extras estándar
+                htmlOptions += `
+                    <div class="modal-section-title">🧊 Preferencias</div>
+                    <div class="options-grid">
+                        <div class="option-card" onclick="toggleOptionCard(this)">
+                            <span>Con Hielo</span>
+                            <input type="checkbox" value="Con Hielo">
+                            <div class="custom-checkbox"></div>
+                        </div>
+                        <div class="option-card" onclick="toggleOptionCard(this)">
+                            <span>Limón</span>
+                            <input type="checkbox" value="Con Limón">
+                            <div class="custom-checkbox"></div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            optionsContainer.innerHTML = htmlOptions;
+            document.getElementById('modal-customizer').style.display = 'flex';
+        }
+
+        function closeCustomizer() {
+            document.getElementById('modal-customizer').style.display = 'none';
+        }
+
+        function closeCustomizerOnOutsideClick(event) {
+            if(event.target.id === 'modal-customizer') closeCustomizer();
+        }
+
+        function handleAddToCart(event) {
+            event.preventDefault();
+            const checkedBoxes = document.querySelectorAll('#modal-dynamic-options input[type="checkbox"]:checked');
+            
+            let selectedSpecs = [];
+            let finalPrice = currentItem.price;
+
+            checkedBoxes.forEach(cb => {
+                selectedSpecs.push(cb.value);
+                if(cb.dataset.extra) {
+                    finalPrice += parseFloat(cb.dataset.extra);
+                }
+            });
+
+            cart.push({
+                id: Date.now() + Math.random().toString(36).substr(2, 5),
+                name: currentItem.name,
+                price: finalPrice,
+                specs: selectedSpecs
+            });
+
+            closeCustomizer();
+            renderCart();
+        }
+
+        function removeItem(id) {
+            cart = cart.filter(item => item.id !== id);
+            renderCart();
+        }
+
+        function renderCart() {
+            const comandaList = document.getElementById('comanda-list');
+            const totalDisplay = document.getElementById('comanda-total-price');
+            const navCount = document.getElementById('nav-cart-count');
+
+            navCount.innerText = cart.length;
+
+            if(cart.length === 0) {
+                comandaList.innerHTML = `<p style="text-align: center; color: #8E8E93; padding: 20px 0;">Tu comanda está vacía.</p>`;
+                totalDisplay.innerText = '$0.00';
+                return;
+            }
+
+            comandaList.innerHTML = '';
+            let total = 0;
+
+            cart.forEach(item => {
+                total += item.price;
+                const row = document.createElement('div');
+                row.className = 'cart-item-row';
+                
+                const specsLabel = item.specs.length > 0 ? item.specs.join(', ') : 'Sencillo';
+
+                row.innerHTML = `
+                    <div class="cart-item-left">
+                        <h4>${item.name}</h4>
+                        <p>${specsLabel}</p>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="font-weight: 700;">$${item.price.toFixed(2)}</span>
+                        <button class="btn-delete-item" onclick="removeItem('${item.id}')">✕</button>
+                    </div>
+                `;
+                comandaList.appendChild(row);
+            });
+
+            totalDisplay.innerText = `$${total.toFixed(2)}`;
+        }
+
+        function toggleDeliveryFields() {
+            const method = document.getElementById('form-delivery-method').value;
+            const fieldsDom = document.getElementById('fields-domicilio');
+            if(method === 'local') {
+                fieldsDom.classList.add('hidden');
+            } else {
+                fieldsDom.classList.remove('hidden');
+            }
+        }
+
+        let compiledMessage = '';
+
+        function generateTicket(event) {
+            event.preventDefault();
+            if(cart.length === 0) {
+                alert('Agrega productos a tu comanda antes de confirmar.');
+                return;
+            }
+
+            const name = document.getElementById('form-name').value;
+            const method = document.getElementById('form-delivery-method').value;
+            const address = document.getElementById('form-address').value;
+            const notes = document.getElementById('form-notes').value;
+            const ticketNumber = Math.floor(1000 + Math.random() * 9000);
+
+            let total = 0;
+            let itemsText = '';
+            cart.forEach((item, index) => {
+                total += item.price;
+                const specsLabel = item.specs.length > 0 ? `(${item.specs.join(', ')})` : '(Sencillo)';
+                itemsText += `◾ ${item.name} ${specsLabel}\n`;
+            });
+
+            compiledMessage = `✨ *TICKET DE ORDEN #${ticketNumber}*\n`;
+            compiledMessage += `👤 *Cliente:* ${name}\n`;
+            compiledMessage += `📍 *Entrega:* ${method === 'domicilio' ? 'Domicilio' : 'Recoger en Local'}\n`;
+            if (method === 'domicilio' && address) {
+                compiledMessage += `🏠 *Dirección:* ${address}\n`;
+                if(notes) compiledMessage += `📝 *Notas:* ${notes}\n`;
+            }
+            compiledMessage += `-----------------------------------\n`;
+            compiledMessage += itemsText;
+            compiledMessage += `-----------------------------------\n`;
+            compiledMessage += `💰 *TOTAL FINAL: $${total.toFixed(2)}*`;
+
+            document.getElementById('ticket-text').innerText = compiledMessage;
+            document.getElementById('ticket-final').style.display = 'block';
+            
+            // Auto scroll al ticket generado
+            document.getElementById('ticket-final').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function sendToWhatsApp() {
+            // 1. Recuperar los pedidos existentes en memoria local para no sobreescribirlos
+            let pedidosActivos = JSON.parse(localStorage.getItem('pedidos_cocina')) || [];
+            
+            // 2. Extraer valores actuales de los campos del formulario
+            const name = document.getElementById('form-name').value;
+            const method = document.getElementById('form-delivery-method').value;
+            const address = document.getElementById('form-address').value;
+            const notes = document.getElementById('form-notes').value;
+            const ticketNumber = Math.floor(1000 + Math.random() * 9000);
+            
+            let total = 0;
+            let itemsArray = [];
+            
+            // 3. Estructurar los artículos del carrito para el panel de cocina
+            cart.forEach(item => {
+                total += item.price;
+                itemsArray.push({
+                    name: item.name,
+                    specs: item.specs.length > 0 ? item.specs.join(', ') : 'Sencillo'
+                });
+            });
+
+            // 4. Crear el objeto JSON del nuevo pedido
+            const nuevoPedido = {
+                id: ticketNumber,
+                cliente: name,
+                tipo: method,
+                direccion: method === 'domicilio' ? address : '',
+                notas: method === 'domicilio' ? notes : '',
+                articulos: itemsArray,
+                total: total.toFixed(2),
+                estado: 'pendiente',
+                hora: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+            };
+
+            // 5. Insertar al arreglo común y guardarlo en la base local compartida
+            pedidosActivos.push(nuevoPedido);
+            localStorage.setItem('pedidos_cocina', JSON.stringify(pedidosActivos));
+
+            alert('¡Pedido enviado correctamente al panel de cocina!');
+            
+            // 6. Redirección automática a la interfaz de tus operarios
+            window.location.href = 'cocina.html';
+        }
+    </script>
 </body>
 </html>
